@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <partial name="MetaPartial" />
+
+    <title>@ViewData["Title"] - FAQ DD</title>
+
+    <partial name="CssPartial" />
+
+    <partial name="ScriptsPartial" />
+</head>
+<body>
+    <partial name="NavbarPartial" />
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <partial name="FooterPartial" />
+    
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

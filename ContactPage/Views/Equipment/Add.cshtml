@@ -1,0 +1,94 @@
+﻿@model ContactPage.Models.Item
+
+@{
+    ViewData["Titel"] = "Добавление";
+    
+}
+
+<h1>Оборудование</h1>
+
+<h4>Добавление</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="ItemId" />
+
+            <div class="container overflow-hidden">
+                <div class="form-row gy-1">
+                    <div class="form-group col-md-4">
+                        <label asp-for="GuidId" class="control-label"></label>
+                        <input asp-for="GuidId" class="form-control" /> <!--disabled-->
+                        <span asp-validation-for="GuidId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="TypeItem" class="control-label"></label>
+                        <select asp-for="TypeItem" asp-items="Html.GetEnumSelectList<TypesItem>()" class="form-control"></select>
+                        <span asp-validation-for="TypeItem" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container overflow-hidden">
+                <div class="form-row gy-4">
+                    <div class="form-group col-md-4">
+                        <label asp-for="Company" class="control-label"></label>
+                        <input asp-for="Company" class="form-control" />
+                        <span asp-validation-for="Company" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label asp-for="Serial" class="control-label"></label>
+                        <input asp-for="Serial" class="form-control" />
+                        <span asp-validation-for="Serial" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4"></div>
+                </div>
+            </div>
+
+            <div class="container overflow-hidden">
+                <div class="form-row gy-4">
+                    <div class="form-group col-md-5">
+                        <label asp-for="AssignedEmployee" class="control-label"></label>
+                        <input asp-for="AssignedEmployee" class="form-control" />
+                        <span asp-validation-for="AssignedEmployee" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label asp-for="WhereIs" class="control-label"></label>
+                        <input asp-for="WhereIs" class="form-control" />
+                        <span asp-validation-for="WhereIs" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4"></div>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="NameDescriptionInfo" />
+            <input type="hidden" asp-for="DescriptionInfo" />
+            <input type="hidden" asp-for="NameDescriptionProgramm" />
+            <input type="hidden" asp-for="DescriptionProgramm" />
+            <input type="hidden" asp-for="NameDescriptionLicense" />
+            <input type="hidden" asp-for="DescriptionLicense" />
+
+            <div class="form-row">
+                <div class="form-group col-sm-10">
+                    <input type="submit" value="Применить" class="btn btn-primary" />
+                </div>
+                <div class="form-group col-sm-10">
+                    <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-table"></i>Назад</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

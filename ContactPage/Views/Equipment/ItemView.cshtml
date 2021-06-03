@@ -1,0 +1,70 @@
+﻿@model ContactPage.Models.Item
+
+@{
+    ViewData["Titel"] = "Просмотр";
+}
+
+<h1>Просмотр оборудования</h1>
+
+<h4>Просмотр</h4>
+<hr />
+
+<div class="form-group col-md-12">
+    <div class="col-md-6">
+        <a asp-action="Index" class="btn btn-default"><i class="fa fa-table"></i> Назад</a>
+        <hr />
+    </div>
+    <div class="col-md-6">
+        <a asp-action="Edit" asp-route-id="@Model.ItemId" class="btn btn-warning"><i class="far fa-edit"></i> Редактировать</a>
+        <hr />
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="col-md-6">
+        <h3>@Model.Name</h3>
+        <h4>@Model.Company - @Model.Serial</h4>
+        <p class="blog-post-meta">@Model.TypeItem - \ @Model.GuidId \</p>
+        <hr />
+    </div>
+    <div class="col-md-6">
+        <a class="btn btn-info" asp-action="GetImage" asp-route-id="@Model.ItemId"><i class="fas fa-qrcode"></i> Получить маркер</a>
+    </div>
+</div>
+
+<div class="table-responsive col-md-6">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Передано сотруднику</th>
+                <th>Где находится</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.AssignedEmployee</td>
+                <td>@Model.WhereIs</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-12">
+    <div class="col-md-12">
+        <h2 class="control-label col-md-12">@Model.NameDescriptionInfo</h2>
+        <hr />
+        @Html.Raw(Model.DescriptionInfo)
+    </div>
+    <div class="col-md-12">
+        <h2 class="control-label col-md-12">@Model.NameDescriptionLicense</h2>
+        <hr />
+        @Html.Raw(Model.DescriptionLicense)
+    </div>
+    <div class="col-md-12">
+        <h2 class="control-label col-md-12">@Model.NameDescriptionProgramm</h2>
+        <hr />
+        @Html.Raw(Model.DescriptionProgramm)
+    </div>
+</div>
+<div class="form-group col-md-12">
+    <a asp-action="Index" class="btn btn-default"><i class="fa fa-table"></i> Назад</a>
+</div>

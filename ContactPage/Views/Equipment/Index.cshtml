@@ -1,0 +1,124 @@
+﻿@model IEnumerable<ContactPage.Models.Item>
+
+@{
+    ViewData["Title"] = "Оборудование";
+}
+    <h2>@ViewData["Title"]</h2>
+    <h5>Оборудование котоорое в офисе <br /> Каждый имеет полный доступ к добавлению, редактированию и удалению (при их не актуальности) данных в таблице. <br /> 
+        Убедительная просьба без согласования технического отдела ничего не трогать!
+    </h5>
+    <p>
+        <strong>Gadgets</strong> - Смартфоны, гаджеты, планшеты, фототехника
+    </p>
+    <p>
+        <strong>Multimedia</strong> - Телевизоры, консоли, аудиотехника, мониторы
+    </p>
+    <p>
+        <strong>Computers</strong> - Компьютеры, ноутбуки, комплектующие
+    </p>
+    <p>
+        <strong>Office Equipment</strong> - Принтеры, 3Д принтеры, картриджи принтера, телефоны стационарные, перефирия(клавы, мыши, комплекты клава+мышь, веб камеры, наушники, контроллеры)
+    </p>
+    <p>
+        <strong>Network</strong> - Wi-Fi, адаптеры Блютуз, сетевые карты, оборудование 3Г, коммутаторы
+    </p>
+    <p>
+        <strong>Оборудование в личном пользовании сотрудников</strong> - <a asp-controller="EmployeeDebt" asp-action="Index">Показать</a>
+    </p>
+    <hr />
+<p><i class="far fa-eye"></i> - Показать больше информации.</p>
+
+<div class="container">
+    @{
+        var _modelNow = Model.GroupBy(x => x.TypeItem).Distinct();
+        if (_modelNow.Count() > 1)
+        {
+            <a class="btn btn-info col-md-2" href="/Equipment/ExportExcel?filter="><i class="glyphicon glyphicon-list-alt"></i> Save Excel</a>
+        }
+        else
+        {
+            <a class="btn btn-info col-md-2" href="/Equipment/ExportExcel?filter=@_modelNow.First().Key"><i class="glyphicon glyphicon-list-alt"></i> Save Excel</a>
+        }
+    }
+
+    <form class="form-inline col-md-5">
+        <label>Выберите фильтр:</label>
+        <select name="filter" class="form-control">
+            <option value="">Все</option>
+            @foreach (var item in Model.GroupBy(x => x.TypeItem).Distinct().ToList())
+            {
+                <option value="@item.Key">@item.Key</option>
+            }
+        </select>
+        <input type="hidden" name="number" value="0" />
+        <input type="submit" class="btn btn-secondary" value="Показать" />
+    </form>
+    <form class="form-inline col-md-5">
+        <label>Cотрудник:</label>
+        <select name="filter" class="form-control">
+            <option value="">Все</option>
+            @foreach (var item in Model.GroupBy(x => x.AssignedEmployee).OrderBy(x => x.Key).Distinct().ToList())
+            {
+                <option value="@item.Key">@item.Key</option>
+            }
+        </select>
+        <input type="hidden" name="number" value="1" />
+        <input type="submit" class="btn btn-secondary" value="Показать" />
+    </form>
+</div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Внутрений номер
+            </th>
+            <th>
+                Тип оборудования
+            </th>
+            <th>
+                Наименование
+            </th>
+            <th>
+                Компания
+            </th>
+            <th>
+                Серия
+            </th>
+            <th>
+                Закрепленный сотрудник
+            </th>
+            <th>
+                Где находится
+            </th>
+            <th>
+                <a asp-action="Add" class="btn btn-primary btn-outline-success" role="button"><i class="far fa-plus-square"></i> Создать предмет</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--TODO: Сделать разделитель наименований + количество под это наименование.-->
+        @foreach (Item item in Model)
+        {
+        <tr>
+            <td> @item.GuidId </td>
+            <td> @Enum.GetName(typeof(TypesItem), item.TypeItem) </td>
+            <td> @item.Name </td>
+            <td> @item.Company </td>
+            <td> @item.Serial </td>
+            <td> @item.AssignedEmployee </td>
+            <td> @item.WhereIs </td>
+            <td class="btn-group">
+                <a asp-action="ItemView" asp-route-id="@item.ItemId" class="btn btn-success"><i class="far fa-eye"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.ItemId" class="btn btn-danger text-danger ml-1" onclick="return confirm('Вы уверены что ходите удалить этот контакт?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+<address>
+    <strong>По возникшим вопросам и предложениям пишите:</strong> <a href="mailto:tech@3dday.ru">tech@3dday.ru</a><br />
+</address>

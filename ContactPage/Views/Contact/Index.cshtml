@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ContactPage.Models.Employee>
+
+@{
+    ViewData["Title"] = "Контакты компании";
+}
+<h2>@ViewData["Title"]</h2>
+<h5>Контакты подрядчиков для общего пользования в компани. <br /> Каждый имеет полный доступ к добавлению, редактированию и удалению (при их не актуальности) данных в таблице. <br /> </h5>
+<hr />
+<p><i class="far fa-eye"></i> - Показать больше информации.</p>
+
+<div class="container">
+    @{
+        var _modelNow = Model.GroupBy(x => x.FieldOfActivity).Distinct();
+        if (_modelNow.Count() > 1)
+        {
+            <a class="btn btn-info col-md-2" href="/Contact/ExportExcel?filter="><i class="glyphicon glyphicon-list-alt"></i> Save Excel</a>
+        }
+        else
+        {
+            <a class="btn btn-info col-md-2" href="/Contact/ExportExcel?filter=@_modelNow.First().Key"><i class="glyphicon glyphicon-list-alt"></i> Save Excel</a>
+        }
+    }
+
+    <form class="form-inline col-md-10">
+        <label>Выберите фильтр сферы деятельности:</label>
+        <select name="filter" class="form-control">
+            <option value="">Все сферы деятельности</option>
+            @foreach (var item in Model.GroupBy(x => x.FieldOfActivity).Distinct().ToList())
+            {
+                <option value="@item.Key">@item.Key</option>
+            }
+        </select>
+        <input type="submit" class="btn btn-secondary" value="Показать" />
+    </form>
+</div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Компания
+            </th>
+            <th>
+                Сфера деятельности
+            </th>
+            <th>
+                Телефон
+            </th>
+            <th>
+                Почта
+            </th>
+            <th>
+                <a asp-action="AddOrEdit" class="btn btn-primary btn-outline-success" role="button"><i class="far fa-plus-square"></i> Создать контакт</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+        <tr>
+            <td> @String.Join(" ", employee.Name, employee.Surname, employee.MiddleName) </td>
+            <td> @employee.Company </td>
+            <td> @employee.FieldOfActivity </td>
+            <td> @String.Format("+7 {0:(###) ###-##-##}", double.Parse(employee.Phone)) </td>
+            <td> @employee.Mail </td>
+            <td class="btn-group">
+                <a asp-action="AddOrEdit" asp-route-id="@employee.EmployeeId" class="btn btn-success"><i class="far fa-eye"></i></a>
+                <a asp-action="Delete" asp-route-id="@employee.EmployeeId" class="btn btn-danger text-danger ml-1" onclick="return confirm('Вы уверены что ходите удалить этот контакт?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+<address>
+    <strong>По возникшим вопросам и предложениям пишите:</strong> <a href="mailto:tech@3dday.ru">tech@3dday.ru</a><br />
+</address>

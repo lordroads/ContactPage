@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ContactPage.Models.EmployeeDebt>
+
+@{
+    ViewData["Title"] = "Оборудование не в офисе";
+}
+<h2>@ViewData["Title"]</h2>
+<h5>
+    Оборудование котоорое не в офисе, на руках у сотрудниках компании или подрядчиков <br /> Каждый имеет полный доступ к добавлению, редактированию и удалению (при их не актуальности) данных в таблице. <br />
+    Убедительная просьба без согласования технического отдела ничего не трогать!
+</h5>
+<hr />
+<p><i class="far fa-eye"></i> - Показать больше информации.</p>
+
+<div class="container">
+    <a class="btn btn-info col-md-2" href="/EmployeeDebt/ExportExcel"><i class="glyphicon glyphicon-list-alt"></i> Save Excel</a>
+</div>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Телефон
+            </th>
+            <th>
+                Оборудоывние в пользовании
+            </th>
+            <th>
+                <a asp-action="AddOrEdit" class="btn btn-primary btn-outline-success" role="button"><i class="far fa-plus-square"></i> Создать предмет</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--TODO: Сделать разделитель наименований + количество под это наименование.-->
+        @foreach (EmployeeDebt employeeDebt in Model)
+        {
+            <tr>
+                <td> @String.Join(" ", employeeDebt.Name, employeeDebt.Surname, employeeDebt.MiddleName) </td>
+                <td> @String.Format("+7 {0:(###) ###-##-##}", double.Parse(employeeDebt.Phone)) </td>
+                <td> @employeeDebt.Equipment </td>
+                <td class="btn-group">
+                    <a asp-action="AddOrEdit" asp-route-id="@employeeDebt.EmployeeDebtId" class="btn btn-success"><i class="far fa-eye"></i></a>
+                    <a asp-action="Delete" asp-route-id="@employeeDebt.EmployeeDebtId" class="btn btn-danger text-danger ml-1" onclick="return confirm('Вы уверены что ходите удалить этот контакт?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+<address>
+    <strong>По возникшим вопросам и предложениям пишите:</strong> <a href="mailto:tech@3dday.ru">tech@3dday.ru</a><br />
+</address>
